@@ -1,0 +1,29 @@
+### NFSe Nacional API - Exemplos de Requisições
+
+# Variáveis
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+### 1. Health Check
+GET {{baseUrl}}/health
+
+### 2. Raiz da API
+GET {{baseUrl}}/
+
+### 3. Consultar Notas Emitidas - Sem filtros
+GET {{baseUrl}}/api/notas/emitidas
+
+### 4. Consultar Notas Emitidas - Com período
+GET {{baseUrl}}/api/notas/emitidas?dataInicio=2026-01-01&dataFim=2026-01-31
+
+### 5. Consultar Notas Emitidas - Com paginação
+GET {{baseUrl}}/api/notas/emitidas?dataInicio=2026-01-01&dataFim=2026-01-31&pagina=1&itensPorPagina=50
+
+### 6. Consultar Notas Recebidas
+GET {{baseUrl}}/api/notas/recebidas?dataInicio=2026-01-01&dataFim=2026-01-31
+
+### 7. Consultar Detalhes de uma Nota
+GET {{baseUrl}}/api/notas/123456
+
+### 8. Rota não existente (teste de erro 404)
+GET {{baseUrl}}/api/rota-inexistente
