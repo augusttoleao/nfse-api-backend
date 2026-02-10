@@ -1,4 +1,4 @@
-import empresasService from '../services/empresasService.js';
+const empresasService = require('../services/empresasService');
 
 /**
  * Controller de Empresas
@@ -97,4 +97,4 @@ class EmpresasController {
   }
 }
 
-export default new EmpresasController();
+module.exports = new EmpresasController();

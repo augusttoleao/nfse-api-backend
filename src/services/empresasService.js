@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 
 /**
  * Serviço de Empresas
@@ -124,4 +124,4 @@ class EmpresasService {
   }
 }
 
-export default new EmpresasService();
+module.exports = new EmpresasService();

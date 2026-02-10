@@ -1,5 +1,5 @@
-import express from 'express';
-import empresasController from '../controllers/empresasController.js';
+const express = require('express');
+const empresasController = require('../controllers/empresasController');
 
 const router = express.Router();
 
@@ -20,4 +20,4 @@ router.get('/:id', empresasController.obterPorId.bind(empresasController));
 // GET /api/empresas/cnpj/:cnpj - Obter empresa por CNPJ
 router.get('/cnpj/:cnpj', empresasController.obterPorCNPJ.bind(empresasController));
 
-export default router;
+module.exports = router;
