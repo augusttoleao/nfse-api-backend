@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const notasRoutes = require('./routes/notasRoutes');
+const empresasRoutes = require('./routes/empresasRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
  * Rotas da API
  */
 app.use('/api/notas', notasRoutes);
+app.use('/api/empresas', empresasRoutes);
 
 /**
  * Rota de health check
@@ -54,6 +56,10 @@ app.get('/', (req, res) => {
       notasEmitidas: '/api/notas/emitidas',
       notasRecebidas: '/api/notas/recebidas',
       detalhesNota: '/api/notas/:numeroNota',
+      empresas: '/api/empresas',
+      empresasAtivas: '/api/empresas/ativas',
+      empresaPorId: '/api/empresas/:id',
+      empresaPorCNPJ: '/api/empresas/cnpj/:cnpj',
     },
   });
 });
