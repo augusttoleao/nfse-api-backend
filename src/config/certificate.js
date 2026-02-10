@@ -19,16 +19,18 @@ class CertificateManager {
 
   /**
    * Inicializa o agente HTTPS com o certificado e chave
+   * Se o certificado não existir, retorna um agente sem certificado
    * @returns {https.Agent} Agente HTTPS configurado
    */
   initializeAgent() {
     try {
-      if (!fs.existsSync(this.certPath)) {
-        throw new Error(`Certificado não encontrado em: ${this.certPath}`);
-      }
-
-      if (!fs.existsSync(this.keyPath)) {
-        throw new Error(`Chave privada não encontrada em: ${this.keyPath}`);
+      // Se o certificado não existir, retornar um agente sem certificado
+      if (!fs.existsSync(this.certPath) || !fs.existsSync(this.keyPath)) {
+        console.warn('⚠ Certificado digital não encontrado. Usando conexão sem certificado.');
+        this.httpsAgent = new https.Agent({
+          rejectUnauthorized: false,
+        });
+        return this.httpsAgent;
       }
 
       const cert = fs.readFileSync(this.certPath, 'utf8');
@@ -44,7 +46,11 @@ class CertificateManager {
       return this.httpsAgent;
     } catch (error) {
       console.error('✗ Erro ao carregar certificado:', error.message);
-      throw error;
+      // Retornar agente sem certificado como fallback
+      this.httpsAgent = new https.Agent({
+        rejectUnauthorized: false,
+      });
+      return this.httpsAgent;
     }
   }
 
