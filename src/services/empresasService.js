@@ -2,28 +2,52 @@ const { executeQuery } = require('../config/database');
 
 /**
  * Serviço de Empresas
- * Consulta a tabela de empresas do banco MSSQL (Azure - EasyApp)
+ * Consulta a tabela EMPRESA do banco MSSQL (Azure - EasyApp)
+ * 
+ * Colunas da tabela EMPRESA:
+ * ID, ID_EMPRESA, CNPJ, RAZAO_SOCIAL, NOME_FANTASIA, ATIVO,
+ * BAIRRO, ENDERECO, ENDERECO_NUMERO, ENDERECO_COMPLEMENTO,
+ * CEP, CIDADE, UF, INSC_MUNICIPAL, INSC_ESTADUAL, TELEFONE,
+ * EMAIL, CNAE, DT_INC, DT_ALT, ENDERECO_CODIGO_IBGE, etc.
  */
 
 class EmpresasService {
   /**
    * Listar todas as empresas do banco de dados
-   * @returns {Promise<Array>} Lista de empresas
+   * @returns {Promise<Object>} Lista de empresas
    */
   async listarEmpresas() {
     try {
-      // Query para buscar todas as empresas da tabela EMPRESA
       const query = `
         SELECT 
-          id,
-          cnpj,
-          razao_social as razaoSocial,
-          nome_fantasia as nomeFantasia,
-          inscricao_municipal as inscricaoMunicipal,
-          ativo,
-          data_atualizacao as dataAtualizacao
+          ID as id,
+          ID_EMPRESA as idEmpresa,
+          CNPJ as cnpj,
+          RAZAO_SOCIAL as razaoSocial,
+          NOME_FANTASIA as nomeFantasia,
+          ATIVO as ativo,
+          BAIRRO as bairro,
+          ENDERECO as endereco,
+          ENDERECO_NUMERO as enderecoNumero,
+          ENDERECO_COMPLEMENTO as enderecoComplemento,
+          CEP as cep,
+          CIDADE as cidade,
+          UF as uf,
+          INSC_MUNICIPAL as inscricaoMunicipal,
+          INSC_ESTADUAL as inscricaoEstadual,
+          TELEFONE as telefone,
+          TELEFONE_DDD as telefoneDdd,
+          EMAIL as email,
+          CNAE as cnae,
+          TIPO_INSCRICAO as tipoInscricao,
+          DT_INC as dataInclusao,
+          DT_ALT as dataAlteracao,
+          ENDERECO_CODIGO_IBGE as codigoIbge,
+          ENDERECO_LOGRADOURO as logradouro,
+          ENDERECO_TIPO_LOGRADOURO as tipoLogradouro,
+          NFSE_TOKEN_EMISSAO as nfseTokenEmissao
         FROM EMPRESA
-        ORDER BY razao_social ASC
+        ORDER BY RAZAO_SOCIAL ASC
       `;
 
       const empresas = await executeQuery(query);
@@ -53,15 +77,29 @@ class EmpresasService {
     try {
       const query = `
         SELECT 
-          id,
-          cnpj,
-          razao_social as razaoSocial,
-          nome_fantasia as nomeFantasia,
-          inscricao_municipal as inscricaoMunicipal,
-          ativo,
-          data_atualizacao as dataAtualizacao
+          ID as id,
+          ID_EMPRESA as idEmpresa,
+          CNPJ as cnpj,
+          RAZAO_SOCIAL as razaoSocial,
+          NOME_FANTASIA as nomeFantasia,
+          ATIVO as ativo,
+          BAIRRO as bairro,
+          ENDERECO as endereco,
+          ENDERECO_NUMERO as enderecoNumero,
+          CEP as cep,
+          CIDADE as cidade,
+          UF as uf,
+          INSC_MUNICIPAL as inscricaoMunicipal,
+          INSC_ESTADUAL as inscricaoEstadual,
+          TELEFONE as telefone,
+          EMAIL as email,
+          CNAE as cnae,
+          DT_INC as dataInclusao,
+          DT_ALT as dataAlteracao,
+          ENDERECO_CODIGO_IBGE as codigoIbge,
+          NFSE_TOKEN_EMISSAO as nfseTokenEmissao
         FROM EMPRESA
-        WHERE cnpj = @cnpj
+        WHERE CNPJ = @cnpj
       `;
 
       const empresas = await executeQuery(query, { cnpj });
@@ -93,15 +131,29 @@ class EmpresasService {
     try {
       const query = `
         SELECT 
-          id,
-          cnpj,
-          razao_social as razaoSocial,
-          nome_fantasia as nomeFantasia,
-          inscricao_municipal as inscricaoMunicipal,
-          ativo,
-          data_atualizacao as dataAtualizacao
+          ID as id,
+          ID_EMPRESA as idEmpresa,
+          CNPJ as cnpj,
+          RAZAO_SOCIAL as razaoSocial,
+          NOME_FANTASIA as nomeFantasia,
+          ATIVO as ativo,
+          BAIRRO as bairro,
+          ENDERECO as endereco,
+          ENDERECO_NUMERO as enderecoNumero,
+          CEP as cep,
+          CIDADE as cidade,
+          UF as uf,
+          INSC_MUNICIPAL as inscricaoMunicipal,
+          INSC_ESTADUAL as inscricaoEstadual,
+          TELEFONE as telefone,
+          EMAIL as email,
+          CNAE as cnae,
+          DT_INC as dataInclusao,
+          DT_ALT as dataAlteracao,
+          ENDERECO_CODIGO_IBGE as codigoIbge,
+          NFSE_TOKEN_EMISSAO as nfseTokenEmissao
         FROM EMPRESA
-        WHERE id = @id
+        WHERE ID = @id
       `;
 
       const empresas = await executeQuery(query, { id: parseInt(id) });
@@ -125,23 +177,37 @@ class EmpresasService {
   }
 
   /**
-   * Filtrar empresas ativas
-   * @returns {Promise<Array>} Lista de empresas ativas
+   * Filtrar empresas ativas (ATIVO = 'S')
+   * @returns {Promise<Object>} Lista de empresas ativas
    */
   async listarEmpresasAtivas() {
     try {
       const query = `
         SELECT 
-          id,
-          cnpj,
-          razao_social as razaoSocial,
-          nome_fantasia as nomeFantasia,
-          inscricao_municipal as inscricaoMunicipal,
-          ativo,
-          data_atualizacao as dataAtualizacao
+          ID as id,
+          ID_EMPRESA as idEmpresa,
+          CNPJ as cnpj,
+          RAZAO_SOCIAL as razaoSocial,
+          NOME_FANTASIA as nomeFantasia,
+          ATIVO as ativo,
+          BAIRRO as bairro,
+          ENDERECO as endereco,
+          ENDERECO_NUMERO as enderecoNumero,
+          CEP as cep,
+          CIDADE as cidade,
+          UF as uf,
+          INSC_MUNICIPAL as inscricaoMunicipal,
+          INSC_ESTADUAL as inscricaoEstadual,
+          TELEFONE as telefone,
+          EMAIL as email,
+          CNAE as cnae,
+          DT_INC as dataInclusao,
+          DT_ALT as dataAlteracao,
+          ENDERECO_CODIGO_IBGE as codigoIbge,
+          NFSE_TOKEN_EMISSAO as nfseTokenEmissao
         FROM EMPRESA
-        WHERE ativo = 'S' OR ativo = 1 OR ativo = true
-        ORDER BY razao_social ASC
+        WHERE ATIVO = 'S'
+        ORDER BY RAZAO_SOCIAL ASC
       `;
 
       const empresas = await executeQuery(query);
