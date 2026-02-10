@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const notasRoutes = require('./routes/notasRoutes');
 const empresasRoutes = require('./routes/empresasRoutes');
+const certificadosRoutes = require('./routes/certificadosRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -31,6 +32,7 @@ app.use((req, res, next) => {
  */
 app.use('/api/notas', notasRoutes);
 app.use('/api/empresas', empresasRoutes);
+app.use('/api/certificados', certificadosRoutes);
 
 /**
  * Rota de health check
