@@ -1,8 +1,8 @@
-const axios = require('axios');
+const { executeQuery } = require('../config/database');
 
 /**
  * Serviço de Empresas
- * Consulta a tabela de empresas do banco MSSQL (EasyApp)
+ * Consulta a tabela de empresas do banco MSSQL (Azure - EasyApp)
  */
 
 class EmpresasService {
@@ -12,20 +12,21 @@ class EmpresasService {
    */
   async listarEmpresas() {
     try {
-      // Simulação de resposta até que o banco MSSQL seja configurado
-      // Quando configurado, será feita a consulta real ao banco
-      
-      const empresas = [
-        {
-          id: 1,
-          cnpj: '00766728000129',
-          razaoSocial: 'COOPERCLIM COOPERATIVA DE TRABALHO',
-          nomeFantasia: 'COOPERCLIM',
-          inscricaoMunicipal: '7165801',
-          ativo: true,
-          dataAtualizacao: new Date().toISOString()
-        }
-      ];
+      // Query para buscar todas as empresas da tabela EMPRESA
+      const query = `
+        SELECT 
+          id,
+          cnpj,
+          razao_social as razaoSocial,
+          nome_fantasia as nomeFantasia,
+          inscricao_municipal as inscricaoMunicipal,
+          ativo,
+          data_atualizacao as dataAtualizacao
+        FROM EMPRESA
+        ORDER BY razao_social ASC
+      `;
+
+      const empresas = await executeQuery(query);
 
       return {
         success: true,
@@ -50,16 +51,28 @@ class EmpresasService {
    */
   async obterEmpresaPorCNPJ(cnpj) {
     try {
-      const empresas = await this.listarEmpresas();
-      const empresa = empresas.data.find(e => e.cnpj === cnpj);
+      const query = `
+        SELECT 
+          id,
+          cnpj,
+          razao_social as razaoSocial,
+          nome_fantasia as nomeFantasia,
+          inscricao_municipal as inscricaoMunicipal,
+          ativo,
+          data_atualizacao as dataAtualizacao
+        FROM EMPRESA
+        WHERE cnpj = @cnpj
+      `;
 
-      if (!empresa) {
+      const empresas = await executeQuery(query, { cnpj });
+
+      if (!empresas || empresas.length === 0) {
         throw new Error(`Empresa com CNPJ ${cnpj} não encontrada`);
       }
 
       return {
         success: true,
-        data: empresa
+        data: empresas[0]
       };
     } catch (error) {
       console.error('Erro ao obter empresa:', error);
@@ -78,16 +91,28 @@ class EmpresasService {
    */
   async obterEmpresaPorId(id) {
     try {
-      const empresas = await this.listarEmpresas();
-      const empresa = empresas.data.find(e => e.id === parseInt(id));
+      const query = `
+        SELECT 
+          id,
+          cnpj,
+          razao_social as razaoSocial,
+          nome_fantasia as nomeFantasia,
+          inscricao_municipal as inscricaoMunicipal,
+          ativo,
+          data_atualizacao as dataAtualizacao
+        FROM EMPRESA
+        WHERE id = @id
+      `;
 
-      if (!empresa) {
+      const empresas = await executeQuery(query, { id: parseInt(id) });
+
+      if (!empresas || empresas.length === 0) {
         throw new Error(`Empresa com ID ${id} não encontrada`);
       }
 
       return {
         success: true,
-        data: empresa
+        data: empresas[0]
       };
     } catch (error) {
       console.error('Erro ao obter empresa:', error);
@@ -105,13 +130,27 @@ class EmpresasService {
    */
   async listarEmpresasAtivas() {
     try {
-      const empresas = await this.listarEmpresas();
-      const ativas = empresas.data.filter(e => e.ativo === true);
+      const query = `
+        SELECT 
+          id,
+          cnpj,
+          razao_social as razaoSocial,
+          nome_fantasia as nomeFantasia,
+          inscricao_municipal as inscricaoMunicipal,
+          ativo,
+          data_atualizacao as dataAtualizacao
+        FROM EMPRESA
+        WHERE ativo = 'S' OR ativo = 1 OR ativo = true
+        ORDER BY razao_social ASC
+      `;
+
+      const empresas = await executeQuery(query);
 
       return {
         success: true,
-        data: ativas,
-        total: ativas.length
+        data: empresas,
+        total: empresas.length,
+        message: 'Empresas ativas listadas com sucesso'
       };
     } catch (error) {
       console.error('Erro ao listar empresas ativas:', error);
