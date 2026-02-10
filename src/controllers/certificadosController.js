@@ -1,4 +1,4 @@
-import certificadosService from '../services/certificadosService.js';
+const certificadosService = require('../services/certificadosService');
 
 /**
  * Controller de Certificados
@@ -193,4 +193,4 @@ class CertificadosController {
   }
 }
 
-export default new CertificadosController();
+module.exports = new CertificadosController();

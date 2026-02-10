@@ -1,6 +1,6 @@
-import express from 'express';
-import multer from 'multer';
-import certificadosController from '../controllers/certificadosController.js';
+const express = require('express');
+const multer = require('multer');
+const certificadosController = require('../controllers/certificadosController');
 
 const router = express.Router();
 
@@ -41,4 +41,4 @@ router.get('/:id', certificadosController.obter.bind(certificadosController));
 // DELETE /api/certificados/:id - Deletar um certificado
 router.delete('/:id', certificadosController.deletar.bind(certificadosController));
 
-export default router;
+module.exports = router;
